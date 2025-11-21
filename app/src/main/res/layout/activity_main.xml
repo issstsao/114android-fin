@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AI 彈跳實驗"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="40dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="請輸入彈跳高度（公分）"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/etHeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:hint="例如 50.0"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnStartTimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="開始計時（放手時按）"
+        android:textSize="18sp"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:id="@+id/tvTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.000 秒"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"/>
+
+    <Button
+        android:id="@+id/btnCalculate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="計算重力加速度 g"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:layout_marginTop="30dp"/>
+
+    <Button
+        android:id="@+id/btnHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="查看歷史記錄"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FAFAFA">
+
+    <TextView
+        android:id="@+id/tvId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID: 1"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="高度：50.0 cm"
+        android:textSize="18sp"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="時間：0.319 秒"/>
+
+    <TextView
+        android:id="@+id/tvG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="g ≈ 9.81 m/s²"
+        android:textColor="#D81B60"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2025-11-19 10:23"
+        android:textColor="#666666"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>
