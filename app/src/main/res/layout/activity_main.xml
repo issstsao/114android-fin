@@ -1,64 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="32dp"
-    android:gravity="center_horizontal">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="AI 彈跳實驗"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="40dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="請輸入彈跳高度（公分）"
-        android:textSize="18sp"/>
-
-    <EditText
-        android:id="@+id/etHeight"
+    <!-- Dr. Gravity 對話框 -->
+    <LinearLayout
+        android:id="@+id/llTutor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:hint="例如 50.0"
-        android:textSize="20sp"
-        android:layout_marginTop="8dp"/>
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="#AA000000"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btnStartTimer"
+        <ImageView
+            android:id="@+id/ivMood"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@android:drawable/btn_star_big_on"
+            android:contentDescription="心情" />
+
+        <TextView
+            android:id="@+id/tvTutor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="嗨！我是 Dr. Gravity～準備探索重力了嗎？"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_marginStart="12dp" />
+    </LinearLayout>
+
+    <!-- 物理模擬畫面 -->
+    <com.example.aibounce.SimulationView
+        android:id="@+id/simulationView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/llTutor"
+        app:layout_constraintBottom_toTopOf="@id/controlPanel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 底部控制面板 -->
+    <LinearLayout
+        android:id="@+id/controlPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="開始計時（放手時按）"
-        android:textSize="18sp"
-        android:layout_marginTop="40dp"/>
+        android:orientation="vertical"
+        android:background="#F5F5F5"
+        android:padding="12dp"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <TextView
-        android:id="@+id/tvTimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0.000 秒"
-        android:textSize="48sp"
-        android:textStyle="bold"
-        android:layout_marginTop="30dp"/>
+        <!-- 按鈕列 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btnCalculate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="計算重力加速度 g"
-        android:textSize="18sp"
-        android:enabled="false"
-        android:layout_marginTop="30dp"/>
+            <Button android:id="@+id/btnStart"   android:text="開始"   android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"/>
+            <Button android:id="@+id/btnReset"   android:text="重置"   android:layout_width="0dp" android:layout_weight="1" android:layout_marginStart="8dp" android:layout_height="wrap_content"/>
+            <Button android:id="@+id/btnSave"    android:text="儲存實驗" android:layout_width="0dp" android:layout_weight="1" android:layout_marginStart="8dp" android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/btnHistory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="查看歷史記錄"
-        android:layout_marginTop="20dp"/>
-</LinearLayout>
+        <!-- 設定列 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/etHeight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="初始高度 (公尺)"
+                android:inputType="numberDecimal"
+                android:text="10" />
+
+            <Spinner
+                android:id="@+id/spinnerEnv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp" />
+
+            <Spinner
+                android:id="@+id/spinnerMat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- 即時數據 -->
+        <TextView
+            android:id="@+id/tvData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="準備開始實驗..."
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:background="#FFFFFF"
+            android:padding="12dp"
+            android:layout_marginTop="12dp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
