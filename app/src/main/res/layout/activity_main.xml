@@ -60,17 +60,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button android:id="@+id/btnStart"   android:text="開始"   android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"/>
+            <Button android:id="@+id/btnStart"   android:text="暫停"   android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"/>
             <Button android:id="@+id/btnReset"   android:text="重置"   android:layout_width="0dp" android:layout_weight="1" android:layout_marginStart="8dp" android:layout_height="wrap_content"/>
             <Button android:id="@+id/btnSave"    android:text="儲存實驗" android:layout_width="0dp" android:layout_weight="1" android:layout_marginStart="8dp" android:layout_height="wrap_content"/>
-            <Button
-                android:id="@+id/btnHistory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="查看所有實驗記錄"
-                android:layout_margin="16dp"
-                app:layout_constraintTop_toBottomOf="@id/controlPanel"
-                app:layout_constraintBottom_toBottomOf="parent" />
         </LinearLayout>
 
         <!-- 設定列 -->
@@ -104,7 +96,7 @@
                 android:layout_marginStart="8dp" />
         </LinearLayout>
 
-        <!-- 即時數據 -->
+        <!-- 即時數據顯示 -->
         <TextView
             android:id="@+id/tvData"
             android:layout_width="match_parent"
@@ -112,8 +104,15 @@
             android:text="準備開始實驗..."
             android:textSize="15sp"
             android:textColor="#000000"
-            android:background="#FFFFFF"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="20dp"/>
+
+        <!-- 新加的查看歷史按鈕 -->
+        <Button
+            android:id="@+id/btnHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="查看所有實驗記錄"
+            android:layout_marginTop="16dp"/>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

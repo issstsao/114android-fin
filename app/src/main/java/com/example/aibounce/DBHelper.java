@@ -1,4 +1,3 @@
-// DBHelper.java
 package com.example.aibounce;
 
 import android.content.ContentValues;
@@ -20,14 +19,14 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE " + TABLE + " (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "height REAL," +           // 初始高度 (m)
-                "gravity REAL," +          // 重力加速度
-                "bounce REAL," +           // 彈性係數
-                "env TEXT," +              // 環境名稱
-                "material TEXT," +         // 材質名稱
-                "max_pe REAL," +           // 最大位能
-                "final_ke REAL," +         // 最後動能（耗散後）
-                "timestamp TEXT" +         // 時間
+                "height REAL," +
+                "gravity REAL," +
+                "bounce REAL," +
+                "env TEXT," +
+                "material TEXT," +
+                "max_pe REAL," +
+                "final_ke REAL," +
+                "timestamp TEXT" +
                 ")";
         db.execSQL(sql);
     }
@@ -38,8 +37,8 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long saveExperiment(float height, float g, float bounce, String env, String mat,
-                               float maxPE, float finalKE) {
+    // 改名成 insert（標準名稱）
+    public long insert(float height, float g, float bounce, String env, String mat, float maxPE, float finalKE) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("height", height);

@@ -1,14 +1,13 @@
-// MainActivity.java（真正最終無敵版，保證不閃退！）
 package com.example.aibounce;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import java.text.DecimalFormat;
-import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,14 +16,12 @@ public class MainActivity extends AppCompatActivity {
     private Handler uiHandler;
     private DecimalFormat df = new DecimalFormat("0.00");
 
-    // UI 元件
-    private Button btnStart, btnReset, btnSave, btnHistory;
+    private Button btnStart, btnReset, btnSave, btnHistory;  // 新加 btnHistory
     private EditText etHeight;
     private Spinner spinnerEnv, spinnerMat;
     private TextView tvTutor, tvData;
     private ImageView ivMood;
 
-    // 環境與材質資料
     private final String[] environments = {"地球 (9.8 m/s²)", "月球 (1.6 m/s²)", "木星 (24.8 m/s²)"};
     private final float[] gravityValues = {9.8f, 1.6f, 24.8f};
     private final String[] materials = {"橡膠 (0.8)", "鋼球 (0.95)", "強力球 (0.7)"};
@@ -35,12 +32,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 初始化所有元件（一定要有 id 才找得到！）
         simulationView = findViewById(R.id.simulationView);
         btnStart = findViewById(R.id.btnStart);
         btnReset = findViewById(R.id.btnReset);
         btnSave = findViewById(R.id.btnSave);
-        btnHistory = findViewById(R.id.btnHistory);  // 這行之前漏了！
+        btnHistory = findViewById(R.id.btnHistory);  // 新加
         etHeight = findViewById(R.id.etHeight);
         spinnerEnv = findViewById(R.id.spinnerEnv);
         spinnerMat = findViewById(R.id.spinnerMat);
@@ -111,12 +107,14 @@ public class MainActivity extends AppCompatActivity {
             float maxPE = 1.0f * g * h;
             float finalKE = simulationView.kineticEnergy;
 
-            long id = db.saveExperiment(h, g, bounce, env, mat, maxPE, finalKE);
+            long id = db.insert(h, g, bounce, env, mat, maxPE, finalKE);
             Toast.makeText(this, "實驗已儲存！ID: " + id, Toast.LENGTH_LONG).show();
         });
 
-        btnHistory.setOnClickListener(v ->
-                startActivity(new Intent(this, HistoryActivity.class)));
+        // 新加的邏輯
+        btnHistory.setOnClickListener(v -> {
+            startActivity(new Intent(this, HistoryActivity.class));
+        });
     }
 
     private void startDataUpdateLoop() {
