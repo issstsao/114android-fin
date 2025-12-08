@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final String[] environments = {"地球 (9.8 m/s²)", "月球 (1.6 m/s²)", "木星 (24.8 m/s²)"};
     private final float[] gravityValues = {9.8f, 1.6f, 24.8f};
-    private final String[] materials = {"橡膠 (0.8)", "鋼球 (0.95)", "強力球 (0.7)"};
+    private final String[] materials = {"橡膠 (0.8)", "鋼球 (0.95)", "彈力球 (0.7)"};
     private final float[] bounceValues = {0.8f, 0.95f, 0.7f};
 
     @Override
