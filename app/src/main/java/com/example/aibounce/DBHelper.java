@@ -1,3 +1,4 @@
+// DBHelper.java
 package com.example.aibounce;
 
 import android.content.ContentValues;
@@ -5,60 +6,55 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import androidx.annotation.Nullable;
 
 public class DBHelper extends SQLiteOpenHelper {
-
-    // 資料庫名稱與版本
-    private static final String DB_NAME = "bounce.db";
+    private static final String DB_NAME = "dr_gravity.db";
     private static final int DB_VERSION = 1;
+    public static final String TABLE = "experiments";
 
-    // 表格與欄位名稱
-    public static final String TABLE_NAME = "records";
-    public static final String COL_ID      = "_id";          // 自動遞增主鍵
-    public static final String COL_HEIGHT  = "height";       // 高度 (cm)
-    public static final String COL_TIME    = "time_sec";     // 時間 (秒)
-    public static final String COL_G       = "gravity";      // 計算出的 g
-    public static final String COL_DATE    = "date";         // 時間戳記
-
-    public DBHelper(@Nullable Context context) {
+    public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE " + TABLE_NAME + " (" +
-                COL_ID     + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_HEIGHT + " REAL, " +
-                COL_TIME   + " REAL, " +
-                COL_G      + " REAL, " +
-                COL_DATE   + " TEXT" +
-                ");";
+        String sql = "CREATE TABLE " + TABLE + " (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "height REAL," +           // 初始高度 (m)
+                "gravity REAL," +          // 重力加速度
+                "bounce REAL," +           // 彈性係數
+                "env TEXT," +              // 環境名稱
+                "material TEXT," +         // 材質名稱
+                "max_pe REAL," +           // 最大位能
+                "final_ke REAL," +         // 最後動能（耗散後）
+                "timestamp TEXT" +         // 時間
+                ")";
         db.execSQL(sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
         onCreate(db);
     }
 
-    // 新增一筆實驗記錄
-    public long insert(double heightCm, double timeSec, double g) {
+    public long saveExperiment(float height, float g, float bounce, String env, String mat,
+                               float maxPE, float finalKE) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COL_HEIGHT, heightCm);
-        cv.put(COL_TIME, timeSec);
-        cv.put(COL_G, g);
-        cv.put(COL_DATE, System.currentTimeMillis() + ""); // 存毫秒
-        long id = db.insert(TABLE_NAME, null, cv);
-        db.close();
-        return id;
+        cv.put("height", height);
+        cv.put("gravity", g);
+        cv.put("bounce", bounce);
+        cv.put("env", env);
+        cv.put("material", mat);
+        cv.put("max_pe", maxPE);
+        cv.put("final_ke", finalKE);
+        cv.put("timestamp", System.currentTimeMillis() + "");
+        return db.insert(TABLE, null, cv);
     }
 
-    // 取得全部資料（最新在最上面）
-    public Cursor getAllRecords() {
+    public Cursor getAllExperiments() {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(TABLE_NAME, null, null, null, null, null, COL_ID + " DESC");
+        return db.query(TABLE, null, null, null, null, null, "_id DESC");
     }
 }

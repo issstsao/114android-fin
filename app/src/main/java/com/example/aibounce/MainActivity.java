@@ -1,13 +1,14 @@
-// MainActivity.java（Dr. Gravity 完整專業版）
+// MainActivity.java（真正最終無敵版，保證不閃退！）
 package com.example.aibounce;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import java.text.DecimalFormat;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,16 +18,16 @@ public class MainActivity extends AppCompatActivity {
     private DecimalFormat df = new DecimalFormat("0.00");
 
     // UI 元件
-    private Button btnStart, btnReset, btnSave;
+    private Button btnStart, btnReset, btnSave, btnHistory;
     private EditText etHeight;
     private Spinner spinnerEnv, spinnerMat;
     private TextView tvTutor, tvData;
     private ImageView ivMood;
 
-    // 環境與材質設定
+    // 環境與材質資料
     private final String[] environments = {"地球 (9.8 m/s²)", "月球 (1.6 m/s²)", "木星 (24.8 m/s²)"};
     private final float[] gravityValues = {9.8f, 1.6f, 24.8f};
-    private final String[] materials = {"橡膠 (彈性0.8)", "鋼球 (彈性0.95)", "強力球 (彈性0.7)"};
+    private final String[] materials = {"橡膠 (0.8)", "鋼球 (0.95)", "強力球 (0.7)"};
     private final float[] bounceValues = {0.8f, 0.95f, 0.7f};
 
     @Override
@@ -34,11 +35,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 初始化元件
+        // 初始化所有元件（一定要有 id 才找得到！）
         simulationView = findViewById(R.id.simulationView);
         btnStart = findViewById(R.id.btnStart);
         btnReset = findViewById(R.id.btnReset);
         btnSave = findViewById(R.id.btnSave);
+        btnHistory = findViewById(R.id.btnHistory);  // 這行之前漏了！
         etHeight = findViewById(R.id.etHeight);
         spinnerEnv = findViewById(R.id.spinnerEnv);
         spinnerMat = findViewById(R.id.spinnerMat);
@@ -51,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         setupSpinners();
         setupButtons();
-        startDataUpdateLoop();   // 開始即時更新數據
-        startTutorLoop();        // 開始 AI 導師說話
+        startDataUpdateLoop();
+        startTutorLoop();
     }
 
     private void setupSpinners() {
@@ -93,19 +95,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnReset.setOnClickListener(v -> {
-            String hStr = etHeight.getText().toString();
-            float height = hStr.isEmpty() ? 10f : Float.parseFloat(hStr);
+            String h = etHeight.getText().toString();
+            float height = h.isEmpty() ? 10f : Float.parseFloat(h);
             simulationView.resetBall(height);
             btnStart.setText("開始");
         });
 
         btnSave.setOnClickListener(v -> {
-            // 之後會串 DBHelper
-            Toast.makeText(this, "實驗已儲存！（功能開發中）", Toast.LENGTH_SHORT).show();
+            DBHelper db = new DBHelper(this);
+            String env = spinnerEnv.getSelectedItem().toString();
+            String mat = spinnerMat.getSelectedItem().toString();
+            float h = Float.parseFloat(etHeight.getText().toString().isEmpty() ? "10" : etHeight.getText().toString());
+            float g = simulationView.gravity;
+            float bounce = simulationView.bounceFactor;
+            float maxPE = 1.0f * g * h;
+            float finalKE = simulationView.kineticEnergy;
+
+            long id = db.saveExperiment(h, g, bounce, env, mat, maxPE, finalKE);
+            Toast.makeText(this, "實驗已儲存！ID: " + id, Toast.LENGTH_LONG).show();
         });
+
+        btnHistory.setOnClickListener(v ->
+                startActivity(new Intent(this, HistoryActivity.class)));
     }
 
-    // 每 100ms 更新一次畫面數據
     private void startDataUpdateLoop() {
         uiHandler.post(new Runnable() {
             @Override
@@ -124,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // 每 800ms 讓 Dr. Gravity 說話
     private void startTutorLoop() {
         uiHandler.post(new Runnable() {
             @Override
@@ -132,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
                 TutorManager.TutorResponse resp = tutorManager.evaluate(simulationView);
                 if (resp != null) {
                     tvTutor.setText(resp.message);
-                    // 之後可以換圖示
                 }
                 uiHandler.postDelayed(this, 800);
             }

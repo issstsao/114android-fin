@@ -1,8 +1,11 @@
+// HistoryActivity.java（真正最終版，已對應新 DBHelper）
 package com.example.aibounce;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.widget.*;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class HistoryActivity extends AppCompatActivity {
@@ -17,34 +20,32 @@ public class HistoryActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.listView);
         dbHelper = new DBHelper(this);
-        Button btnExport = findViewById(R.id.btnExport);
-
-        btnExport.setOnClickListener(v -> {
-            Cursor cursor = dbHelper.getAllRecords();
-            ExportXml.export(this, cursor);
-            cursor.close();
-        });
 
         loadData();
     }
 
     private void loadData() {
-        Cursor cursor = dbHelper.getAllRecords();
+        Cursor cursor = dbHelper.getAllExperiments();
 
-        String[] from = {DBHelper.COL_ID, DBHelper.COL_HEIGHT, DBHelper.COL_TIME,
-                DBHelper.COL_G, DBHelper.COL_DATE};
-        int[] to = {R.id.tvId, R.id.tvHeight, R.id.tvTime, R.id.tvG, R.id.tvDate};
+        if (cursor == null || cursor.getCount() == 0) {
+            Toast.makeText(this, "還沒有實驗記錄哦～快回去做實驗吧！", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // 對應資料表欄位名稱（直接用字串，因為新版 DBHelper 沒有 static 常數）
+        String[] from = {"_id", "env", "material", "height", "gravity", "max_pe", "final_ke", "timestamp"};
+        int[] to = {R.id.tvId, R.id.tvEnv, R.id.tvMat, R.id.tvHeight, R.id.tvG, R.id.tvMaxPE, R.id.tvFinalKE, R.id.tvTime};
 
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-                this, R.layout.item_record, cursor, from, to, 0);
+                this, R.layout.item_experiment, cursor, from, to, 0);
 
-        // 讓日期顯示得漂亮一點
+        // 美化時間格式
         adapter.setViewBinder((view, cursor1, columnIndex) -> {
-            if (view.getId() == R.id.tvDate) {
-                long timestamp = Long.parseLong(cursor1.getString(columnIndex));
+            if (view.getId() == R.id.tvTime) {
+                String ts = cursor1.getString(columnIndex);
                 String date = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                        .format(new java.util.Date(timestamp));
-                ((TextView) view).setText(date);
+                        .format(new java.util.Date(Long.parseLong(ts)));
+                ((android.widget.TextView) view).setText("時間：" + date);
                 return true;
             }
             return false;
@@ -56,6 +57,6 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadData();
+        loadData(); // 每次回來都刷新
     }
 }

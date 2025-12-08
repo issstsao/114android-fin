@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FAFAFA">
+
+    <TextView
+        android:id="@+id/tvId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="編號：1"
+        android:textStyle="bold"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvEnv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="環境：地球"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/tvMat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="材質：橡膠"/>
+
+    <TextView
+        android:id="@+id/tvHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="初始高度：10.0 m"/>
+
+    <TextView
+        android:id="@+id/tvG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="重力：9.8 m/s²"/>
+
+    <TextView
+        android:id="@+id/tvMaxPE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="最大位能：98.0 J"
+        android:textColor="#2196F3"/>
+
+    <TextView
+        android:id="@+id/tvFinalKE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="最終動能：0.0 J"
+        android:textColor="#F44336"/>
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="時間：2025-12-05 16:00:00"
+        android:textColor="#666666"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"
+        android:layout_marginTop="12dp"/>
+</LinearLayout>
