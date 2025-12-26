@@ -27,6 +27,10 @@ public class SimulationView extends SurfaceView implements Runnable, SurfaceHold
     public float totalEnergy = 0f;
     public boolean justBounced = false;
 
+    private StringBuilder trajectoryRecorder = new StringBuilder();
+    private float timeElapsed = 0f;
+    private int frameCounter = 0;
+
     public SimulationView(Context context) {
         this(context, null);
     }
@@ -58,6 +62,11 @@ public class SimulationView extends SurfaceView implements Runnable, SurfaceHold
         ball.x = getWidth() / 2f;
         ball.velocityY = 0f;
         updateEnergy(heightMeters);
+
+        // 重置記錄器
+        trajectoryRecorder.setLength(0);
+        timeElapsed = 0f;
+        frameCounter = 0;
     }
 
     @Override
@@ -93,8 +102,19 @@ public class SimulationView extends SurfaceView implements Runnable, SurfaceHold
         currentHeightMeters = (getHeight() - ball.y - ball.radius) / scaleFactor;
         currentVelocity = Math.abs(ball.velocityY / scaleFactor);
         updateEnergy(currentHeightMeters);
+
+        timeElapsed += dt;
+        frameCounter++;
+        //每5個frame記錄一次
+        if (frameCounter % 5 == 0 && Math.abs(ball.velocityY) > 0.1f) {
+            // 格式：時間,高度|時間,高度...
+            trajectoryRecorder.append(String.format("%.2f,%.2f|", timeElapsed, currentHeightMeters));
+        }
     }
 
+    public String getTrajectoryData() {
+        return trajectoryRecorder.toString();
+    }
     private void updateEnergy(float h) {
         float m = 1f;
         potentialEnergy = m * gravity * h;

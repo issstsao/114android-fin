@@ -106,8 +106,11 @@ public class MainActivity extends AppCompatActivity {
             float bounce = simulationView.bounceFactor;
             float maxPE = 1.0f * g * h;
             float finalKE = simulationView.kineticEnergy;
+            String trajectory = simulationView.getTrajectoryData();
 
-            long id = db.insert(h, g, bounce, env, mat, maxPE, finalKE);
+            //long id = db.insert(h, g, bounce, env, mat, maxPE, finalKE);
+
+            long id = db.insert(h, g, bounce, env, mat, maxPE, finalKE, trajectory);
             Toast.makeText(this, "實驗已儲存！ID: " + id, Toast.LENGTH_LONG).show();
         });
 

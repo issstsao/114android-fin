@@ -26,7 +26,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "material TEXT," +
                 "max_pe REAL," +
                 "final_ke REAL," +
-                "timestamp TEXT" +
+                "timestamp TEXT," +
+                "trajectory TEXT"+
                 ")";
         db.execSQL(sql);
     }
@@ -38,7 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // 改名成 insert（標準名稱）
-    public long insert(float height, float g, float bounce, String env, String mat, float maxPE, float finalKE) {
+    public long insert(float height, float g, float bounce, String env, String mat, float maxPE, float finalKE,String trajectory) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("height", height);
@@ -49,6 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put("max_pe", maxPE);
         cv.put("final_ke", finalKE);
         cv.put("timestamp", System.currentTimeMillis() + "");
+        cv.put("trajectory", trajectory);
         return db.insert(TABLE, null, cv);
     }
 
